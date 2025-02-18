@@ -17,7 +17,7 @@ sys.enable_sigterm_injection = true
 
 # Insecure configuration for loading arguments and environment variables
 # Do not set these configurations in production
-# loader.insecure__use_cmdline_argv = true
+loader.insecure__use_cmdline_argv = true
 # loader.insecure__use_host_env = true
 
 fs.mounts = [
@@ -49,7 +49,7 @@ sgx.trusted_files = [
   "file:{{ arch_libdir }}/",
   "file:/usr/{{ arch_libdir }}/",
   "file:{{ nodejs_dir }}/nodejs",
-  "file:hello_world.js"
+  "file:hello_world.js",
 ]
 
 # Insecure configuration. Use gramine encrypted fs to store data in production.
