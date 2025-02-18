@@ -18,7 +18,7 @@ sys.enable_sigterm_injection = true
 # Insecure configuration for loading arguments and environment variables
 # Do not set these configurations in production
 loader.insecure__use_cmdline_argv = true
-# loader.insecure__use_host_env = true
+loader.insecure__use_host_env = true
 
 fs.mounts = [
   { uri = "file:{{ gramine.runtimedir() }}", path = "/lib" },
