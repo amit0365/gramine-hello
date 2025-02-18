@@ -5,7 +5,7 @@
 loader.entrypoint = "file:{{ gramine.libos }}"
 libos.entrypoint = "{{ nodejs_dir }}/nodejs"
 
-fs.start_dir = "."
+fs.start_dir = "/"
 
 loader.log_level = "{{ log_level }}"
 
@@ -32,7 +32,7 @@ fs.mounts = [
 sys.enable_extra_runtime_domain_names_conf = true
 sys.fds.limit = 65535
 
-sgx.debug = true
+sgx.debug = false
 sgx.remote_attestation = "dcap"
 sgx.max_threads = 64
 
@@ -53,7 +53,7 @@ sgx.trusted_files = [
 ]
 
 # Insecure configuration. Use gramine encrypted fs to store data in production.
-sgx.allowed_files = [
-]
+#sgx.allowed_files = [
+#]
 
 loader.env.SGX = "1"
