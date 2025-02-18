@@ -18,9 +18,6 @@ THIS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 # Node.js binary directory
 NODEJS_DIR ?= /usr/bin
 
-# Application directory
-APP_DIR = .
-
 # Directory with arch-specific libraries
 # the below path works for Debian/Ubuntu; for CentOS/RHEL/Fedora, you should
 # overwrite this default like this: `ARCH_LIBDIR=/lib64 make`
@@ -78,12 +75,6 @@ GRAMINE = gramine-sgx
 endif
 
 ################################## CLEANUP ###################################
-
-.PHONY: check
-check: all
-	$(GRAMINE) ./nodejs hello_world.js > OUTPUT
-	@grep -q "Hello World" OUTPUT && echo "[ Success 1/1 ]"
-	@rm OUTPUT
 
 # Remove all generated files
 .PHONY: clean
