@@ -32,7 +32,7 @@ fs.mounts = [
 sys.enable_extra_runtime_domain_names_conf = true
 sys.fds.limit = 65535
 
-sgx.debug = false
+sgx.debug = true
 sgx.remote_attestation = "dcap"
 sgx.max_threads = 64
 

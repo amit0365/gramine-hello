@@ -29,7 +29,7 @@ ADD Makefile ./
 RUN mkdir -p untrustedhost
 
 # Build SGX application
-RUN SGX=1 make && \
+RUN SGX=1 DEBUG=1 make && \
     test -f nodejs.manifest.sgx || (echo "SGX manifest not generated" && exit 1)
 
 ENTRYPOINT []
