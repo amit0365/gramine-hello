@@ -1,0 +1,59 @@
+# Copyright (C) 2024 Gramine contributors
+# SPDX-License-Identifier: BSD-3-Clause
+
+# Node.js manifest file example
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "{{ nodejs_dir }}/nodejs"
+
+fs.start_dir = "."
+
+loader.log_level = "{{ log_level }}"
+
+loader.env.RA_TYPE = "dcap"
+
+loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}"
+
+sys.enable_sigterm_injection = true
+
+# Insecure configuration for loading arguments and environment variables
+# Do not set these configurations in production
+# loader.insecure__use_cmdline_argv = true
+# loader.insecure__use_host_env = true
+
+fs.mounts = [
+  { uri = "file:{{ gramine.runtimedir() }}", path = "/lib" },
+  { uri = "file:{{ arch_libdir }}", path = "{{ arch_libdir }}" },
+  { uri = "file:/usr/{{ arch_libdir }}", path = "/usr/{{ arch_libdir }}" },
+  { uri = "file:{{ nodejs_dir }}/nodejs", path = "{{ nodejs_dir }}/nodejs" },
+  { type = "tmpfs", path = "/tmp" },
+  { type = "encrypted", path = "/data/", uri = "file:enclave_data/", key_name = "_sgx_mrenclave" }
+]
+
+sys.enable_extra_runtime_domain_names_conf = true
+sys.fds.limit = 65535
+
+sgx.debug = false
+sgx.remote_attestation = "dcap"
+sgx.max_threads = 64
+
+# Node.js expects around 1.7GB of heap on startup
+sgx.enclave_size = "16G"
+
+# `use_exinfo = true` is needed because Node.js uses memory mappings with `MAP_NORESERVE`, which
+# will defer page accepts to page-fault events when EDMM is enabled
+sgx.edmm_enable = {{ 'true' if env.get('EDMM', '0') == '1' else 'false' }}
+sgx.use_exinfo = {{ 'true' if env.get('EDMM', '0') == '1' else 'false' }}
+
+sgx.trusted_files = [
+  "file:{{ gramine.runtimedir() }}/",
+  "file:{{ arch_libdir }}/",
+  "file:/usr/{{ arch_libdir }}/",
+  "file:{{ nodejs_dir }}/nodejs",
+  "file:hello_world.js",
+]
+
+# Insecure configuration. Use gramine encrypted fs to store data in production.
+# sgx.allowed_files = [
+# ]
+
+loader.env.SGX = "1"
